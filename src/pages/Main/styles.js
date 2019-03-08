@@ -5,6 +5,17 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding-top: 60px;
+
+  .btnLoading {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    color: #fff;
+
+    i {
+      font-size: 32px;
+    }
+  }
 `;
 
 export const Form = styled.form`

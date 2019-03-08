@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-import 'font-awesome/css/font-awesome.css';
+import '@fortawesome/fontawesome-free/css/all.css';
 
 const GlobalStyle = createGlobalStyle`
   * {

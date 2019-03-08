@@ -57,4 +57,29 @@ export const Repository = styled.div`
       }
     }
   }
+
+  div {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    border-top: 1px solid lightgray;
+    padding: 10px;
+  }
+`;
+
+export const Button = styled.button`
+  width: 40px;
+  height: 40px;
+  padding: 5px;
+  background: ${props => (props.buttonStyle === 'refresh' ? '#65edf5' : '#F58565')};
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 3px;
+  border: 0;
+  margin-right: ${props => (props.buttonStyle === 'refresh' ? '10px' : 0)};
+
+  &:hover {
+    background: ${props => (props.buttonStyle === 'refresh' ? '#65D5F5' : '#F56D65')};
+  }
 `;

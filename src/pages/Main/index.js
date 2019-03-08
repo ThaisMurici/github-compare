@@ -9,6 +9,7 @@ import CompareList from '../../components/CompareList';
 export default class Main extends Component {
   state = {
     loading: false,
+    btnLoading: false,
     repositoryError: false,
     repositoryInput: '',
     repositories: [],
@@ -49,9 +50,46 @@ export default class Main extends Component {
     }
   };
 
+  handleRefreshRepository = async (event, repoFullName) => {
+    const { repositories } = this.state;
+
+    this.setState({ btnLoading: true });
+
+    try {
+      const { data: refreshedRepo } = await api.get(`/repos/${repoFullName}`);
+      refreshedRepo.lastCommit = moment(refreshedRepo.pushed_at).fromNow();
+
+      const newList = repositories.map((repo) => {
+        if (repo.id === refreshedRepo.id) {
+          return refreshedRepo;
+        }
+        return repo;
+      });
+
+      this.setState({
+        repositories: newList,
+      });
+
+      localStorage.setItem('repositories', JSON.stringify(newList));
+    } catch (err) {
+      console.log(err);
+    } finally {
+      this.setState({ btnLoading: false });
+    }
+  };
+
+  handleDeleteRepository = (event, id) => {
+    const { repositories } = this.state;
+    const newList = repositories.filter(repo => repo.id !== id);
+    this.setState({
+      repositories: newList,
+    });
+    localStorage.setItem('repositories', JSON.stringify(newList));
+  };
+
   render() {
     const {
-      repositories, repositoryInput, repositoryError, loading,
+      repositories, repositoryInput, repositoryError, loading, btnLoading,
     } = this.state;
     return (
       <Container>
@@ -64,10 +102,21 @@ export default class Main extends Component {
             value={repositoryInput}
             onChange={event => this.setState({ repositoryInput: event.target.value })}
           />
-          <button type="submit">{loading ? <i className="fa fa-spinner fa-pulse" /> : 'OK'}</button>
+          <button type="submit">
+            {loading ? <i className="fas fa-spinner fa-pulse" /> : 'OK'}
+          </button>
         </Form>
 
-        <CompareList repositories={repositories} />
+        <CompareList
+          repositories={repositories}
+          handleRefresh={this.handleRefreshRepository}
+          handleDelete={this.handleDeleteRepository}
+          btnLoading={btnLoading}
+        />
+
+        <div className="btnLoading">
+          {btnLoading ? <i className="fas fa-spinner fa-pulse" /> : ''}
+        </div>
       </Container>
     );
   }

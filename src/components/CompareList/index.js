@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container, Repository } from './styles';
+import { Container, Repository, Button } from './styles';
 
-const CompareList = ({ repositories }) => (
+const CompareList = ({ repositories, handleRefresh, handleDelete }) => (
   <Container>
     {repositories.map(repository => (
       <Repository key={repository.id}>
@@ -34,10 +34,32 @@ const CompareList = ({ repositories }) => (
             <small>last commit</small>
           </li>
         </ul>
+
+        <div>
+          <Button
+            type="submit"
+            buttonStyle="refresh"
+            onClick={event => handleRefresh(event, repository.full_name)}
+          >
+            <i className="fas fa-redo-alt" />
+          </Button>
+          <Button
+            type="submit"
+            buttonStyle="remove"
+            onClick={event => handleDelete(event, repository.id)}
+          >
+            <i className="fas fa-trash-alt" />
+          </Button>
+        </div>
       </Repository>
     ))}
   </Container>
 );
+
+CompareList.defaultProps = {
+  handleRefresh: () => {},
+  handleDelete: () => {},
+};
 
 CompareList.propTypes = {
   repositories: PropTypes.arrayOf(
@@ -54,6 +76,8 @@ CompareList.propTypes = {
       lastCommit: PropTypes.string,
     }),
   ).isRequired,
+  handleRefresh: PropTypes.func,
+  handleDelete: PropTypes.func,
 };
 
 export default CompareList;
