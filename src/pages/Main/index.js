@@ -14,6 +14,13 @@ export default class Main extends Component {
     repositories: [],
   };
 
+  componentDidMount() {
+    const cachedRepos = localStorage.getItem('repositories');
+    if (cachedRepos) {
+      this.setState({ repositories: JSON.parse(cachedRepos) });
+    }
+  }
+
   handleAddRepository = async (event) => {
     event.preventDefault();
 
@@ -31,6 +38,8 @@ export default class Main extends Component {
         repositories: [...repositories, repository],
         repositoryError: false,
       });
+
+      localStorage.setItem('repositories', JSON.stringify([...repositories, repository]));
     } catch (error) {
       this.setState({
         repositoryError: true,
