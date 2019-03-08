@@ -18,10 +18,10 @@ export const Form = styled.form`
     height: 55px;
     padding: 0 20px;
     background: #fff;
-    border: 0;
     font-size: 18px;
     color: #444;
     border-radius: 3px;
+    border: ${props => (props.withError ? '2px solid #f00' : 0)};
   }
 
   button {
@@ -30,10 +30,10 @@ export const Form = styled.form`
     margin-left: 10px;
     background: #65f5b0;
     color: #fff;
-    border: 0;
     font-size: 20px;
     font-weight: bold;
     border-radius: 3px;
+    border: 0;
 
     &:hover {
       background: #52d89f;
